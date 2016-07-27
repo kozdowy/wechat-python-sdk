@@ -562,6 +562,138 @@ class WechatBasic(WechatBase):
             }
         )
 
+    def get_all_tags(self):
+        """
+        :return: JSON, all account tags
+        """
+        return self.request.get(
+            url='https://api.weixin.qq.com/cgi-bin/tags/get'
+        )
+
+    def create_tag(self, tag_name):
+        """
+        :param tag_name: string, name of created tag, <30 characters
+        :return: int, tag id
+        """
+        return self.request.post(
+            url='https://api.weixin.qq.com/cgi-bin/tags/create',
+            data={
+                'tag': {
+                    'name': tag_name
+                }
+            }
+        )
+
+    def update_tag(self, tag_id, tag_name):
+        """
+        :param tag_id: int, id of tag to be updated
+        :param tag_name: string, new tag name
+        :return: bool, success
+        """
+        return self.request.post(
+            url='https://api.weixin.qq.com/cgi-bin/tags/update',
+            data={
+                'tag': {
+                    'id': tag_id,
+                    'name': tag_name
+                }
+            }
+        )
+
+    def delete_tag(self):
+        """
+        :param tag_id: int, id of tag to be deleted
+        :return: bool, success
+        """
+        return self.request.post(
+            url='https://api.weixin.qq.com/cgi-bin/tags/delete',
+            data={
+                'tag': {
+                    'id': tag_id
+                }
+            }
+        )
+
+    def get_user_tags(self, user_id):
+        """
+        :param user_id: string, openID of user
+        :return: [int], tag list
+        """
+        return self.request.get(
+            url='https://api.weixin.qq.com/cgi-bin/tags/getidlist',
+            params={
+                'openid': user_id
+            }
+        )
+
+    def tag_user(self, user_id, tag_id):
+        """
+        :param user_id: string, openID of user
+        :param tag_id: int, id of tag
+        :return: int, success
+        """
+        return self.request.post(
+            url='https://api.weixin.qq.com/cgi-bin/tags/members/batchtagging',
+            data={
+                'openid_list': [user_id],
+                'tagid': tag_id
+            }
+        )
+
+    def batch_tag_users(self, user_ids, tag_id):
+        """
+        :param user_ids: [string], openIDs of users (len < 50)
+        :param tag_id: int, id of tag
+        :return: int, success
+        """
+        return self.request.post(
+            url='https://api.weixin.qq.com/cgi-bin/tags/members/batchtagging',
+            data={
+                'openid_list': user_ids,
+                'tagid': tag_id
+            }
+        )
+
+    def untag_user(self, user_id, tag_id):
+        """
+        :param user_id: string, openID of user
+        :param tag_id: int, id of tag
+        :return: int, success
+        """
+        return self.request.post(
+            url='https://api.weixin.qq.com/cgi-bin/tags/members/batchuntagging',
+            data={
+                'openid_list': [user_id],
+                'tagid': tag_id
+            }
+        )
+
+    def batch_untag_users(self):
+        """
+        :param user_ids: [string], openIDs of users (len < 50)
+        :param tag_id: int, id of tag
+        :return: int, success
+        """
+        return self.request.post(
+            url='https://api.weixin.qq.com/cgi-bin/tags/members/batchuntagging',
+            data={
+                'openid_list': user_ids,
+                'tagid': tag_id
+            }
+        )
+
+    def get_tag_users(self, tag_id):
+        """
+        :param tag_id: int, tag id
+        :return: [string], openIDs using tag
+        """
+        return self.request.get(
+            url='https://api.weixin.qq.com/cgi-bin/user/tag/get',
+            params={
+                'tagid': tag_id
+            }
+        )
+
     def get_followers(self, first_user_id=None):
         """
         获取关注者列表
