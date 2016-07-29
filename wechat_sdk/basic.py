@@ -564,7 +564,9 @@ class WechatBasic(WechatBase):
 
     def get_all_tags(self):
         """
-        :return: JSON, all account tags
+        http://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140837&token=&lang=zh_CN
+        :return: JSON
+        {"tags": [{"id": int, "name": string, "count": int}]}
         """
         return self.request.get(
             url='https://api.weixin.qq.com/cgi-bin/tags/get'
@@ -572,8 +574,10 @@ class WechatBasic(WechatBase):
 
     def create_tag(self, tag_name):
         """
-        :param tag_name: string, name of created tag, <30 characters
-        :return: int, tag id
+        http://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140837&token=&lang=zh_CN
+        :param tag_name: string, name of created tag, <= 30 characters
+        :return: JSON
+        {"tag": {"id": int, "name": string}}
         """
         return self.request.post(
             url='https://api.weixin.qq.com/cgi-bin/tags/create',
@@ -584,11 +588,26 @@ class WechatBasic(WechatBase):
             }
         )
 
+    def mass_create_tag(self, tag_names):
+        """
+        http://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140837&token=&lang=zh_CN
+        :param tag_name: [string] <= 30 characters
+        :return: [JSON]
+        [{"tag": {"id": int, "name": string}}]
+        """
+        return self.request.mass_request(
+            method='post',
+            url='https://api.weixin.qq.com/cgi-bin/tags/create',
+            data_list=[{"tag": {"name": n}} for n in tag_names]
+        )
+
     def update_tag(self, tag_id, tag_name):
         """
+        http://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140837&token=&lang=zh_CN
         :param tag_id: int, id of tag to be updated
         :param tag_name: string, new tag name
-        :return: bool, success
+        :return: JSON
+        {"errcode": int, "errmsg": string}
         """
         return self.request.post(
             url='https://api.weixin.qq.com/cgi-bin/tags/update',
@@ -602,8 +621,10 @@ class WechatBasic(WechatBase):
 
     def delete_tag(self):
         """
+        http://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140837&token=&lang=zh_CN
         :param tag_id: int, id of tag to be deleted
-        :return: bool, success
+        :return: JSON
+        {"errcode": int, "errmsg": string}
         """
         return self.request.post(
             url='https://api.weixin.qq.com/cgi-bin/tags/delete',
@@ -616,21 +637,27 @@ class WechatBasic(WechatBase):
 
     def get_user_tags(self, user_id):
         """
+        http://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140837&token=&lang=zh_CN
+        Note: I have no clue why this is a POST request,
+        but the weixin API demands it.
         :param user_id: string, openID of user
-        :return: [int], tag list
+        :return: JSON
+        {"tagid_list": [int]}
         """
-        return self.request.get(
+        return self.request.post(
             url='https://api.weixin.qq.com/cgi-bin/tags/getidlist',
-            params={
+            data={
                 'openid': user_id
             }
         )
 
     def tag_user(self, user_id, tag_id):
         """
+        http://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140837&token=&lang=zh_CN
         :param user_id: string, openID of user
         :param tag_id: int, id of tag
-        :return: int, success
+        :return: JSON
+        {"errcode": int, "errmsg": string}
         """
         return self.request.post(
             url='https://api.weixin.qq.com/cgi-bin/tags/members/batchtagging',
@@ -642,9 +669,11 @@ class WechatBasic(WechatBase):
 
     def batch_tag_users(self, user_ids, tag_id):
         """
+        http://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140837&token=&lang=zh_CN
         :param user_ids: [string], openIDs of users (len < 50)
         :param tag_id: int, id of tag
-        :return: int, success
+        :return: JSON
+        {"errcode": int, "errmsg": string}
         """
         return self.request.post(
             url='https://api.weixin.qq.com/cgi-bin/tags/members/batchtagging',
@@ -656,9 +685,11 @@ class WechatBasic(WechatBase):
 
     def untag_user(self, user_id, tag_id):
         """
+        http://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140837&token=&lang=zh_CN
         :param user_id: string, openID of user
         :param tag_id: int, id of tag
-        :return: int, success
+        :return: JSON
+        {"errcode": int, "errmsg": string}
         """
         return self.request.post(
             url='https://api.weixin.qq.com/cgi-bin/tags/members/batchuntagging',
@@ -670,9 +701,11 @@ class WechatBasic(WechatBase):
 
     def batch_untag_users(self):
         """
+        http://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140837&token=&lang=zh_CN
         :param user_ids: [string], openIDs of users (len < 50)
         :param tag_id: int, id of tag
-        :return: int, success
+        :return: JSON
+        {"errcode": int, "errmsg": string}
         """
         return self.request.post(
             url='https://api.weixin.qq.com/cgi-bin/tags/members/batchuntagging',
@@ -684,12 +717,15 @@ class WechatBasic(WechatBase):
 
     def get_tag_users(self, tag_id):
         """
+        http://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140837&token=&lang=zh_CN
+        Note: I have no clue why this is a POST request either
         :param tag_id: int, tag id
-        :return: [string], openIDs using tag
+        :return: JSON
+        {"count": int, "data": {"openid": [string]}, "next_openid": string}
         """
-        return self.request.get(
+        return self.request.post(
             url='https://api.weixin.qq.com/cgi-bin/user/tag/get',
-            params={
+            data={
                 'tagid': tag_id
             }
         )
