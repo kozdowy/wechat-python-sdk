@@ -87,6 +87,7 @@ class WechatRequest(object):
 
         split_kwargs = []
         if isinstance(kwargs.get("data_list", ""), list):
+            new_kw = {}
             for data in kwargs.get("data_list"):
                 new_kw = copy.deepcopy(kwargs)
                 body = data
