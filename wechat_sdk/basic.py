@@ -619,7 +619,7 @@ class WechatBasic(WechatBase):
             }
         )
 
-    def delete_tag(self):
+    def delete_tag(self, tag_id):
         """
         http://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140837&token=&lang=zh_CN
         :param tag_id: int, id of tag to be deleted
