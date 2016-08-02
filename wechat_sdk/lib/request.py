@@ -31,7 +31,7 @@ class WechatRequest(object):
         :param kwargs: 附加数据
         :return: 微信服务器响应的 JSON 数据
         """
-        access_token = self.__conf.access_token if self.__conf is not None else access_token
+        access_token = self.__conf.access_token() if self.__conf is not None else access_token
         if "params" not in kwargs:
             kwargs["params"] = {
                 "access_token": access_token
@@ -77,7 +77,7 @@ class WechatRequest(object):
         :param kwargs: 附加数据
         :return: [JSON]
         """
-        access_token = self.__conf.access_token if self.__conf is not None else access_token
+        access_token = self.__conf.access_token() if self.__conf is not None else access_token
         if "params" not in kwargs:
             kwargs["params"] = {
                 "access_token": access_token
