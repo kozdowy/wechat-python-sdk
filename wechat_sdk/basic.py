@@ -568,9 +568,9 @@ class WechatBasic(WechatBase):
         :param remark: string
         :return: 返回的 JSON 数据包
         """
-        return self.request.get(
+        return self.request.post(
             url='https://api.weixin.qq.com/cgi-bin/user/info/updateremark',
-            params={
+            data={
                 'openid': user_id,
                 'remark': remark
             }
