@@ -562,6 +562,20 @@ class WechatBasic(WechatBase):
             }
         )
 
+    def update_user_remark(self, user_id, remark):
+        """
+        :param user_id: 用户 ID, 就是你收到的 WechatMessage 的 source
+        :param remark: string
+        :return: 返回的 JSON 数据包
+        """
+        return self.request.get(
+            url='https://api.weixin.qq.com/cgi-bin/user/info/updateremark',
+            params={
+                'openid': user_id,
+                'remark': remark
+            }
+        )
+
     def get_all_tags(self):
         """
         http://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140837&token=&lang=zh_CN
