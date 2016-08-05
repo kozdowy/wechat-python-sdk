@@ -100,9 +100,12 @@ class WechatBasic(WechatBase):
         if not signature or not timestamp or not nonce:
             return False
 
+        print(self.conf.token)
         tmp_list = [self.conf.token, timestamp, nonce]
         tmp_list.sort()
         tmp_str = ''.join(tmp_list)
+        print('sig: ' + signature)
+        print('res: ' + hashlib.sha1(tmp_str.encode('utf-8')).hexdigest())
         if signature != hashlib.sha1(tmp_str.encode('utf-8')).hexdigest():
             return False
 
