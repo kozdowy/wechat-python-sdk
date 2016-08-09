@@ -1026,6 +1026,17 @@ class WechatBasic(WechatBase):
             }
         )
 
+    def get_user_from_code(code):
+        return self.request.get(
+            url='https://api.weixin.qq.com/sns/oauth2/access_token',
+            params={
+                'appid': conf.appid,
+                'secret': conf.appsecret,
+                'code': code,
+                'grant_type': 'authorization_code'
+            }
+        )
+
     @property
     def access_token(self):
         return self.conf.access_token
