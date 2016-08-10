@@ -102,6 +102,8 @@ class WechatRequest(object):
                 new_kw = copy.deepcopy(kwargs)
                 param["access_token"] = access_token
                 new_kw["params"] = param
+                del new_kw["param_list"]
+                print(new_kw)
                 split_kwargs.append(new_kw)
 
         rs = (grequests.request(method=method,
