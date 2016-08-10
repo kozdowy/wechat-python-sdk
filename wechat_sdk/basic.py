@@ -566,7 +566,7 @@ class WechatBasic(WechatBase):
         )
 
     def get_mass_user_info(self, user_ids, lang='zh_CN'):
-        return self.request.get(
+        return self.request.mass_request(
             url='https://api.weixin.qq.com/cgi-bin/user/info',
             method='get',
             param_list=[
