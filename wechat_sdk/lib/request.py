@@ -78,12 +78,12 @@ class WechatRequest(object):
         :return: [JSON]
         """
         access_token = self.__conf.access_token if self.__conf is not None else access_token
-        if "params" not in kwargs:
-            kwargs["params"] = {
-                "access_token": access_token
-            }
-        else:
-            kwargs["params"]["access_token"] = access_token
+        #if "params" not in kwargs:
+            #kwargs["params"] = {
+                #"access_token": access_token
+            #}
+        #else:
+            #kwargs["params"]["access_token"] = access_token
 
         split_kwargs = []
         if isinstance(kwargs.get("data_list", ""), list):
@@ -99,7 +99,7 @@ class WechatRequest(object):
                 split_kwargs.append(new_kw)
         elif isinstance(kwargs.get("param_list", ""), list):
             for param in kwargs.get("param_list"):
-                new_kw = copy.deepcopy(args)
+                new_kw = copy.deepcopy(kwargs)
                 param["access_token"] = access_token
                 new_kw["params"] = param
                 split_kwargs.append(new_kw)
