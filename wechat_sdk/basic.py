@@ -565,6 +565,18 @@ class WechatBasic(WechatBase):
             }
         )
 
+    def get_mass_user_info(self, user_ids, lang='zh_CN'):
+        return self.request.get(
+            url='https://api.weixin.qq.com/cgi-bin/user/info',
+            method='get',
+            param_list=[
+                {
+                    'openid': user,
+                    'lang': lang
+                } for user in user_ids
+            ]
+        )
+
     def update_user_remark(self, user_id, remark):
         """
         :param user_id: 用户 ID, 就是你收到的 WechatMessage 的 source
