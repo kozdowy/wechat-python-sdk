@@ -716,7 +716,20 @@ class WechatBasic(WechatBase):
             }
         )
 
-    def batch_untag_users(self):
+    def untag_user_mass(self, user_id, tag_ids):
+        return self.request.mass_request(
+            method='post',
+            url='https://api.weixin.qq.com/cgi-bin/tags/members/batchuntagging',
+            data_list=[
+                {
+                    'openid_list': [user_id],
+                    'tagid': tag
+                }
+                for tag in tag_ids
+            ]
+        )
+
+    def batch_untag_users(self, user_ids, tag_id):
         """
         http://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421140837&token=&lang=zh_CN
         :param user_ids: [string], openIDs of users (len < 50)
