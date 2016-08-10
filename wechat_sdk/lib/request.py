@@ -89,7 +89,7 @@ class WechatRequest(object):
                     if isinstance(body, six.text_type):
                         body = body.encode('utf8')
                 new_kw["data"] = body
-                if "params" not in new_kw:
+                if not new_kw.get("params"):
                     new_kw["params"] = {
                         "access_token": access_token
                     }
